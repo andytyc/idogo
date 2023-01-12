@@ -36,16 +36,17 @@ git checkout .
 
 go mod tidy
 
+name="idogo-$1"
+
+# 1: 编译平台
 function build_do() {
-    echo "**** build_do start {$1} ****"
     if [ "$1" = "windows" ]; then
-        go build -o idogo-$1 -ldflags "-s -w"
-        md5sum idogo-$1.exe
+        go build -o $name.exe -ldflags "-s -w"
+        md5sum $name.exe
     else
-        go build -o idogo-$1 -ldflags "-s -w"
-        md5sum idogo-$1
-    fi
-    echo "**** build_do end {$1} ****"
+        go build -o $name -ldflags "-s -w"
+        md5sum $name
+    fi    
 }
 
 build_do $1
