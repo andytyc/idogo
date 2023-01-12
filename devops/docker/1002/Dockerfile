@@ -2,15 +2,6 @@
 # FROM ubuntu:20.04
 FROM golang:1.16-alpine
 
-RUN apt-get update && apt-get install -y tzdata \
-    && rm -rf /var/lib/apt/lists/*
-
-ENV TZ=Asia/Shanghai
-
-########
-# build
-########
-
 # cd /app
 WORKDIR /app
 
