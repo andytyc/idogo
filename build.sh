@@ -36,7 +36,8 @@ git checkout .
 
 go mod tidy
 
-name="idogo-$1"
+# name="idogo-$1"
+name="idogo"
 
 # 1: 编译平台
 function build_do() {

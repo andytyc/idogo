@@ -1,3 +1,4 @@
+# FROM andytyc/ubuntu:16.04
 FROM ubuntu:20.04
 
 RUN apt-get update && apt-get install -y tzdata \
@@ -5,16 +6,18 @@ RUN apt-get update && apt-get install -y tzdata \
 
 ENV TZ=Asia/Shanghai
 
-####
+########
+# build
+########
 
-ARG RUN_DIR
-ENV RUN_DIR=${RUN_DIR:-/home/watrix/darwin/run}
-WORKDIR $RUN_DIR
+# cd /app
+WORKDIR /app
 
-ARG APP_SERVER_NAME
-ENV APP_SERVER_NAME=${APP_SERVER_NAME:-unknown}
+# copy code to /app
+COPY . .
 
-# EXPOSE 12222
+# build
+RUN go build -o /idogo
 
-CMD ["pro"]
-ENTRYPOINT ["/docker-entrypoint.sh"]
+# run
+CMD [ "/idogo" ]
