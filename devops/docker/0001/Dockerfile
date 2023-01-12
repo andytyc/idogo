@@ -1,5 +1,6 @@
 # FROM andytyc/ubuntu:16.04
-FROM ubuntu:20.04
+# FROM ubuntu:20.04
+FROM golang:1.16-alpine
 
 RUN apt-get update && apt-get install -y tzdata \
     && rm -rf /var/lib/apt/lists/*
