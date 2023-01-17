@@ -10,4 +10,4 @@ COPY . .
 RUN go build -o /idogo
 
 # run command
-CMD [ "/idogo" ]
+CMD [ "/idogo -n=2" ]

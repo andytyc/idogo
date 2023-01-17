@@ -1,9 +1,9 @@
 version: "3"
 
 services:
-  idogo_1001:
-    container_name: idogo_1001
-    hostname: idogo_1001
-    image: idogo:1.0.0.1
+  idogo_1002:
+    container_name: idogo_1002
+    hostname: idogo_1002
+    image: idogo:1.0.0.2
     restart: always
     privileged: true
