@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"fmt"
 	"log"
@@ -18,6 +19,7 @@ func init() {
 	flagNumMap := map[int]string{
 		0: "hello world",
 		1: "执行命令",
+		2: "执行交互命令",
 	}
 	flagNumMsg := func() string {
 		msg := "\n"
@@ -39,12 +41,19 @@ func init() {
 		}
 	})
 	log.Println(tagmsg, "args", flag.NArg(), flag.Args())
+
+	log.Println(tagmsg, "加载完毕\n****\n启动\n****")
 }
 
 func main() {
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
 	switch flagNum {
 	case 1:
 		CmdExec()
+	case 2:
+		CmdExecIT(ctx)
 	default:
 		log.Println("hello world !")
 	}
