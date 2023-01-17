@@ -54,8 +54,8 @@ func CmdExecIT(ctx context.Context) {
 
 			input, err := inputReader.ReadString('\n')
 			if err != nil {
-				log.Println(tagmsg, "输入异常,重新输入", err)
-				continue
+				log.Println(tagmsg, "输入异常,退出", err)
+				os.Exit(0)
 			}
 			if len(input) <= 1 {
 				// log.Println(tagmsg, "仅回车操作,重新输入") // 仅回车则忽略
