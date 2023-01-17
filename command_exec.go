@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"strings"
 )
 
 func CmdExec() {
@@ -36,5 +37,6 @@ func CmdExec() {
 		log.Println(tagmsg, "执行失败", err)
 		os.Exit(0)
 	}
-	log.Println(tagmsg, "执行成功\n", out.String())
+	result := strings.TrimRight(out.String(), "\n")
+	log.Println(tagmsg, "执行成功\n"+result)
 }

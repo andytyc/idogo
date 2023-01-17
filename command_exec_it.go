@@ -18,13 +18,12 @@ func CmdExecIT(ctx context.Context) {
 	if err != nil {
 		log.Panicln(err)
 	}
-	log.Println(tagmsg, "当前目录", pwdPath)
 
 	cmdDir := filepath.Join(pwdPath, ".")
 	log.Println(tagmsg, "当前目录", pwdPath)
 
 	funcDo := func(input string) (cmdName string, args []string, ok bool) {
-		log.Println(tagmsg, "输入", input)
+		// log.Println(tagmsg, "输入", input)
 
 		inputArgs := strings.Split(input, " ")
 		if len(inputArgs) <= 0 {
@@ -39,9 +38,11 @@ func CmdExecIT(ctx context.Context) {
 		}
 		ok = true
 
-		log.Println(tagmsg, "输入成功", "命令", cmdName, "参数", args)
+		// log.Println(tagmsg, "输入成功", "命令", cmdName, "参数", args)
 		return
 	}
+
+	log.Println(tagmsg, "输入格式:\n命令 参数1 参数2,...")
 
 	inputReader := bufio.NewReader(os.Stdin)
 	for {
@@ -49,7 +50,7 @@ func CmdExecIT(ctx context.Context) {
 		case <-ctx.Done():
 			return
 		default:
-			log.Println(tagmsg, "请输入,格式: 命令,参数1,参数2,...")
+			log.Println(tagmsg, "请输入:")
 
 			input, err := inputReader.ReadString('\n')
 			if err != nil {
@@ -73,7 +74,19 @@ func CmdExecIT(ctx context.Context) {
 			} else if cmdName == "cd" {
 				if len(args) > 0 {
 					cmdDirCd := args[0]
-					cmdDir = filepath.Join(cmdDir, cmdDirCd)
+					cmdDirNew := filepath.Join(cmdDir, cmdDirCd)
+
+					finfo, err := os.Stat(cmdDirNew)
+					if err != nil && !os.IsExist(err) {
+						log.Println(tagmsg, "路径不存在,重新输入", input)
+						continue
+					}
+					if !finfo.IsDir() {
+						log.Println(tagmsg, "路径非目录,重新输入", input)
+						continue
+					}
+
+					cmdDir = cmdDirNew
 					log.Println(tagmsg, "执行成功", cmdDir)
 					continue
 				} else {
@@ -81,7 +94,7 @@ func CmdExecIT(ctx context.Context) {
 					continue
 				}
 			}
-			log.Println(tagmsg, "执行命令", cmdDir, cmdName, args)
+			// log.Println(tagmsg, "执行命令", cmdDir, cmdName, args)
 
 			cmd := exec.Command(cmdName, args...)
 			var out bytes.Buffer
@@ -98,7 +111,8 @@ func CmdExecIT(ctx context.Context) {
 				log.Println(tagmsg, "执行失败", err)
 				continue
 			}
-			log.Println(tagmsg, "执行成功\n"+out.String())
+			result := strings.TrimRight(out.String(), "\n")
+			log.Println(tagmsg, "执行成功\n"+result)
 		}
 	}
 }
